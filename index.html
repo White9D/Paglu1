@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>For Paglu — A Birthday Movie ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at top,#3b0d26 0%,#13060d 35%,#030204 100%);color:#fff;font-family:"DM Sans",sans-serif}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,154,185,.18),transparent 28%),radial-gradient(circle at 80% 30%,rgba(255,120,170,.14),transparent 22%);pointer-events:none;z-index:0}
+button{font:inherit}.screen{position:fixed;inset:0;display:none;overflow:hidden}.screen.active{display:flex;animation:screenGlow .8s ease both}
+.noise,.vignette{position:absolute;inset:0;pointer-events:none}.noise{z-index:50;opacity:.075;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.vignette{z-index:3;background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.72) 100%)}
+.serif{font-family:"Cormorant Garamond",serif}.pink{color:#ff9ab9}
+.btn{border:1px solid rgba(255,255,255,.28);border-radius:100px;padding:15px 26px;background:linear-gradient(135deg,#ff9bbd,#c9386d 50%,#6a1d44);box-shadow:0 18px 55px rgba(255,95,155,.28);color:#fff;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}.btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 24px 60px rgba(255,95,155,.35);filter:brightness(1.06)}.btn:active{transform:translateY(1px) scale(.99)}
+.btn-funny{position:relative;overflow:hidden;animation:wiggle 2.2s ease-in-out infinite}.btn-funny::before{content:"✨";margin-right:8px}.btn-funny::after{content:"😍";margin-left:8px}.btn-funny:hover{animation:none}
+.kicker{font-size:9px;letter-spacing:5px;color:#ffffff9c}
+.sparkle{position:fixed;z-index:60;pointer-events:none;font-size:22px;opacity:0;animation:sparkleUp 2.2s ease-out forwards}
+#intro{align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 35%,#9b265a,#270817 48%,#030204 90%)}
+.intro{position:relative;z-index:2;width:min(90%,680px);animation:up 1s ease}.film{font-size:10px;letter-spacing:6px;color:#ffffff70;margin-bottom:25px}.intro .heart{font-size:54px;display:block;margin-bottom:15px;animation:beat 1.6s infinite}.intro h1{font-size:clamp(72px,18vw,145px);line-height:.72}.intro p{margin:30px auto;max-width:500px;line-height:1.9;color:#f6dce8;font-size:14px;text-shadow:0 8px 20px rgba(0,0,0,.35)}
+#story{background:#050406}.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .75s ease}.scene.active{opacity:1;visibility:visible}
+/* Full image: contain keeps the entire photo visible and never crops it. */
+.scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:radial-gradient(circle at center,#401423,#07070b 58%,#030204);filter:saturate(1.08) contrast(1.12) brightness(1.02) hue-rotate(-2deg);transform:scale(1.02);transition:transform 7s cubic-bezier(.15,.7,.2,1),filter 1s;box-shadow:inset 0 0 40px rgba(255,255,255,.03)}
+.scene.active img{transform:scale(1.05);filter:saturate(1.16) contrast(1.16) brightness(1.04) hue-rotate(-1deg)}
+.scene:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.48),transparent 30%,rgba(0,0,0,.78) 100%)}
+.content{position:absolute;z-index:5;left:7%;right:7%;bottom:11%;max-width:780px;padding:18px 18px 0 0}.number{font-size:11px;letter-spacing:5px;color:#ffffff88;margin-bottom:13px;text-shadow:0 2px 8px rgba(0,0,0,.8)}.title{font-family:"Cormorant Garamond",serif;font-size:clamp(72px,12vw,138px);line-height:.76;text-shadow:0 8px 30px #000;letter-spacing:-1.5px;font-weight:700}.desc{margin-top:18px;max-width:720px;font-size:17px;line-height:1.9;color:#eee;text-shadow:0 3px 10px rgba(0,0,0,.5)}
+.active .number,.active .title,.active .desc{animation:text .8s both}.active .title{animation-delay:.1s}.active .desc{animation-delay:.24s}
+.progress{position:absolute;z-index:20;top:15px;left:12px;right:12px}.segments{display:flex;gap:3px}.segments i{height:3px;flex:1;border-radius:5px;background:#ffffff28;box-shadow:0 0 8px rgba(255,255,255,.1)}.segments i.done,.segments i.now{background:#fff}.segments i.now{background:#ff91b4}
+.tools{display:flex;justify-content:space-between;align-items:center;margin-top:10px}.counter{font-size:9px;letter-spacing:3px;color:#fff;text-shadow:0 2px 8px #000}.sound{width:38px;height:38px;border:1px solid #ffffff40;border-radius:50%;background:#0006;color:#fff;cursor:pointer;backdrop-filter:blur(10px)}
+.tapZone{position:absolute;z-index:10;top:15%;bottom:12%;width:30%}.tapZone.l{left:0}.tapZone.r{right:0}.swipe{position:absolute;z-index:8;bottom:20px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:4px;color:#fff7;white-space:nowrap}
+.pop{position:fixed;z-index:80;left:50%;bottom:24%;transform:translate(-50%,20px) scale(.9);opacity:0;transition:.4s;background:#08060bcc;border:1px solid #ffffff25;border-radius:100px;padding:12px 18px;font-size:12px;backdrop-filter:blur(14px);white-space:nowrap}.pop.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.float{position:fixed;z-index:7;top:-30px;pointer-events:none;animation:fall linear forwards}.heartBurst{position:fixed;z-index:100;font-size:34px;pointer-events:none;animation:burst 1s forwards}
+#chapter{align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 30%,#7d2148,#200714 55%,#030204)}.chapterCard{position:relative;z-index:2;width:min(90%,650px);animation:up .9s ease}.chapterCard .big{font-family:"Cormorant Garamond",serif;font-size:clamp(68px,16vw,125px);line-height:.75;margin:15px 0}.chapterCard p{color:#bbb;font-size:12px;letter-spacing:2px}
+#letter,#secret,#cake,#final{align-items:center;justify-content:center;text-align:center}
+#letter{background:radial-gradient(circle at 50% 20%,#792448,#230815 55%,#030204)}.card{position:relative;z-index:2;width:min(91%,680px);padding:35px 25px;border:1px solid #ffffff25;border-radius:28px;background:#ffffff0a;backdrop-filter:blur(20px);box-shadow:0 30px 100px #0009;animation:up 1s ease}.card h2{font-family:"Cormorant Garamond",serif;font-size:clamp(78px,15vw,120px);line-height:.78;margin:15px 0 25px;font-weight:700}.card p{font-size:17px;line-height:1.95;color:#eee}.sign{font-family:"Cormorant Garamond",serif;font-size:36px;color:#ffabc3;margin:24px 0}
+#secret{background:radial-gradient(circle at 50% 35%,#61203c,#180611 58%,#030204)}.secretBox{position:relative;z-index:2;animation:up 1s}.lock{font-size:70px;animation:float 2s infinite}.secretBox h2{font-family:"Cormorant Garamond",serif;font-size:clamp(58px,14vw,100px);line-height:.8;margin:20px}.secretBox p{font-size:13px;color:#ccc;max-width:430px;line-height:1.8;margin:0 auto 25px}
+#cake{background:radial-gradient(circle at 50% 30%,#8d2853,#270917 58%,#030204)}.cakeBox{position:relative;z-index:2;animation:up 1s}.cakeEmoji{font-size:125px;margin:25px 0;filter:drop-shadow(0 20px 25px #0009);animation:cake 1.7s infinite}.cakeBox h2{font-family:"Cormorant Garamond",serif;font-size:clamp(58px,14vw,100px);line-height:.75}.cakeBox p{font-size:12px;color:#ccc;margin-bottom:22px}
+#final{background:radial-gradient(circle at 50% 25%,#a52d60,#390c22 48%,#030204)}.final{position:relative;z-index:2;width:min(92%,720px);animation:up 1.1s}.final h1{font-family:"Cormorant Garamond",serif;font-size:clamp(68px,17vw,135px);line-height:.72}.final p{font-size:13px;line-height:1.9;color:#eee;margin:30px auto;max-width:560px}.again{border:1px solid #ffffff35;background:#ffffff0c;border-radius:100px;padding:14px 25px;color:#fff;cursor:pointer}
+#bonus{background:#030204;align-items:center;justify-content:center}.bonusPhotoWrap{position:absolute;inset:0;overflow:hidden}.bonusPhoto{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#000;filter:saturate(1.12) contrast(1.14) brightness(1.04) hue-rotate(-1deg);animation:bonusZoom 30s ease forwards;box-shadow:inset 0 0 30px rgba(255,255,255,.04)}.bonusShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.12) 38%,rgba(0,0,0,.9) 100%)}.bonusText{position:absolute;z-index:6;left:7%;right:7%;bottom:8%;max-width:720px;text-shadow:0 4px 20px #000}.bonusTitle{font-family:"Cormorant Garamond",serif;font-size:clamp(68px,12vw,130px);line-height:.8;margin:12px 0;letter-spacing:-1.2px;font-weight:700}.bonusText p{font-size:15px;line-height:1.8;color:#eee;margin:16px 0 20px}.extraCounter{font-size:9px;letter-spacing:4px;color:#ffffff99;margin-bottom:8px}.extraNav{display:flex;gap:8px;margin-bottom:14px}.extraNav button{border:1px solid #ffffff35;background:#ffffff10;color:#fff;border-radius:50%;width:40px;height:40px;cursor:pointer;backdrop-filter:blur(10px)}.extraDots{display:flex;gap:4px;margin:0 0 16px}.extraDots i{height:3px;flex:1;max-width:45px;background:#ffffff30;border-radius:9px}.extraDots i.on{background:#ff91b4}.bonusEnd{display:none}.bonusEnd.show{display:block;animation:up .8s ease}.bonusEnd .funny{font-size:11px;letter-spacing:1px;color:#ffd2df;margin-bottom:8px}.bonusEnd .romantic{font-family:"Cormorant Garamond",serif;font-size:clamp(34px,7vw,58px);line-height:.95;margin-bottom:14px}.bonusEnd:after{content:"♥  ♥  ♥";display:block;margin-top:18px;letter-spacing:12px;color:#ff91b4;opacity:.75;animation:heartPulse 1.8s ease-in-out infinite}
+@keyframes heartPulse{50%{transform:scale(.8);opacity:1}}@keyframes bonusZoom{from{transform:scale(1)}to{transform:scale(1.03)}}@keyframes up{from{opacity:0;transform:translateY(35px) scale(.97)}to{opacity:1;transform:none}}@keyframes text{from{opacity:0;transform:translateY(28px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes beat{50%{transform:scale(1.18)}}@keyframes float{50%{transform:translateY(-13px)}}@keyframes cake{50%{transform:translateY(-10px) scale(1.04)}}@keyframes wiggle{0%,100%{transform:translateY(0) rotate(0deg)}20%{transform:translateY(-2px) rotate(-1deg)}40%{transform:translateY(0) rotate(1deg)}60%{transform:translateY(-2px) rotate(-1deg)}80%{transform:translateY(0) rotate(1deg)}}@keyframes fall{to{transform:translateY(110vh) rotate(300deg);opacity:0}}@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) scale(.2)}60%{opacity:1;transform:translate(-50%,-130%) scale(1.5)}100%{opacity:0;transform:translate(-50%,-230%) scale(.8)}}@keyframes sparkleUp{0%{opacity:0;transform:translate(-50%,20px) scale(.5) rotate(0deg)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-110px) scale(1.4) rotate(100deg)}}@keyframes screenGlow{0%{opacity:0;filter:brightness(.8) saturate(.8)}100%{opacity:1;filter:brightness(1) saturate(1)}}
+@media(min-width:800px){.content{left:10%;bottom:12%}}
+@media(max-width:600px){.content{bottom:9%;left:6%;right:6%}.title{font-size:clamp(42px,12vw,70px)}.desc{font-size:12px}.bonusText{bottom:5%;left:6%;right:6%}.bonusTitle{font-size:clamp(42px,12vw,70px)}.bonusText p{font-size:12px;margin:10px 0 14px}.extraDots{margin-bottom:10px}}
+</style>
+</head>
+<body>
+<!-- PHOTO FILES
+MAIN 30:
+  photos/photo1.jpg ... photos/photo30.jpg
+
+BONUS:
+  photos/finalPhoto.jpg
+  photos/extra1.jpg ... photos/extra10.jpg
+-->
+
+
+<section id="intro" class="screen active"><div class="noise"></div><div class="intro">
+<div class="film">A PRIVATE BIRTHDAY • 2026</div><span class="heart">❤️</span>
+<h1 class="serif">Hey,<br><span class="pink">My Favourite Paglu.</span></h1>
+<p>Apke liye ek chhota sa gitt banaaya hai —<br>jisme sirf Apki smile hai, Apki Achi si photos hai, aur ek pyaar bhari si dua hai. 🎬💖</p>
+<button class="btn btn-funny" onclick="startMovie()">Click me, I’m cute 😌</button>
+</div></section>
+
+<section id="story" class="screen"><div class="noise"></div>
+<div class="progress"><div class="segments" id="segments"></div><div class="tools"><div class="counter" id="counter">01 / 30</div><button class="sound" onclick="musicToggle()">🔊</button></div></div>
+<div id="scenes"></div><div class="tapZone l" onclick="previous()"></div><div class="tapZone r" onclick="next()"></div><div class="swipe">SWIPE • TAP • DOUBLE TAP ❤️</div><div id="pop" class="pop"></div>
+</section>
+
+<section id="chapter" class="screen"><div class="noise"></div><div class="chapterCard"><div class="kicker">OUR LITTLE CHAPTER</div><div class="big">Chapter<br><span class="pink">Two</span></div><p>YOU • ME • FOREVER FEELS</p></div></section>
+
+<section id="bonus" class="screen"><div class="bonusPhotoWrap"><div class="noise"></div>
+<img id="bonusPhoto" class="bonusPhoto" src="photos/finalPhoto.png" alt="Bonus memory of Paglu"><div class="bonusShade"></div>
+<div class="bonusText"><div class="extraCounter" id="extraCounter">BONUS MEMORY</div><div class="kicker">30 KE BAAD BHI... 😏❤️</div>
+<div class="bonusTitle" id="bonusTitle">Wait...<br><span class="pink">aur photos bhi hain? 😂</span></div>
+<p id="bonusCaption">Haan Paglu, 30 photos ke baad bhi dil nahi maana... isliye bonus memories unlock kar di. 🌹</p>
+<div class="extraDots" id="extraDots"></div><div class="extraNav"><button onclick="bonusPrev()">‹</button><button onclick="bonusNext()">›</button></div>
+<div class="bonusEnd" id="bonusEnd"><div class="funny">OFFICIAL REPORT: PAGLU OVERDOSE COMPLETE 😂</div>
+<div class="romantic">App photo nahi ho...<br><span class="pink">meri favourite memory ho. ❤️</span></div>
+<p>Bas ek problem hai — apki photos khatam ho sakti hain, par apko dekh kar smile karne ki aadat shayad kabhi khatam nahi hogi. 🌹</p>
+<button class="btn" onclick="go('letter')">AB ASLI SURPRISE ✨</button></div>
+</div></div></section>
+
+<section id="letter" class="screen"><div class="noise"></div><div class="card"><div class="kicker">A LITTLE NOTE, JUST FOR YOU</div>
+<h2>Dear <span class="pink">Paglu</span> ❤️</h2><p>Ek baar Apko dekhte hi, dil ko ek alag hi sukoon milta hai.<br>Har chhoti si baat mein apki presence mere andar ek soft, warm si khushi jaga deti hai. 😌<br><br>
+Apki cute si confusion, woh random laughter, aur un glances ki adaa — sab kuch mujhe apki aakhe aur bhi zyada special bana deta hai. 💖<br><br>
+App mere liye sirf ek person nahi ho, ek wo dua ho jise dil ne kabhi baar-baar dua mein yaad kiya hai. Aur aaj ke din ka sabse bada wish yahi hai: App hamesha khush raho, hamesha safe raho, aur life apko wohi pyaar de jo app deserve karti ho. 🌹</p>
+<div class="sign">Always yours, in this little love story. 💌</div><button class="btn" onclick="toSecret()">NEXT SURPRISE 🎁</button></div></section>
+
+<section id="secret" class="screen"><div class="noise"></div><div class="secretBox"><div class="lock" id="lock">🔐</div><div class="kicker">CLASSIFIED MESSAGE</div><h2>Paglu...</h2><p>Yeh message sirf tumhare liye hai — bas ek baat, tum mere liye ek special kind of beautiful ho. Jis tarah subah ki dhoop dil ko halka kar deti hai, ussi tarah tumhari presence mere dil ko bhi sukoon deti hai. Ready?</p><button class="btn" onclick="unlock()">UNLOCK THE SECRET ❤️</button></div></section>
+
+<section id="cake" class="screen"><div class="noise"></div><div class="cakeBox"><div class="kicker">FINAL CHAPTER</div><h2>Make a<br><span class="pink">Wish. ✨</span></h2><div class="cakeEmoji">🎂</div><p>Ek wish, ek smile, aur ek bahut pyaara sa birthday — jisme sabse zaroori baat yeh hai ki tum hamesha is tarah hi khush aur pyaar se ghiri raho. 💖</p><button class="btn" onclick="celebrate()">BLOW THE CANDLES 🕯️</button></div></section>
+
+<section id="final" class="screen"><div class="noise"></div><div class="final"><div class="kicker">THE END OF THE MEMORIES</div>
+<h1>Happy<br><span class="pink">Birthday Paglu 🎂</span></h1><p>30 memories. Ek chhoti si movie. Aur ek bahut simple, par bahut important wish — <strong>tum hamesha khush raho, aur hamesha meri favourite person bane raho. ❤️</strong><br><br>
+Photos khatam ho gayi hain…<br>lekin dil ko tumhare liye jo pyaar mila hai, woh kabhi khatam nahi hoga. Aur is little love story ke next chapters abhi bhi likhe ja rahe hain. 🌹🎬</p>
+<button class="again" onclick="location.reload()">↻ WATCH FROM THE BEGINNING</button></div></section>
+
+<audio id="music" loop><source src="Birthday.mp3" type="audio/mpeg"></audio>
+
+<script>
+
+function assetCandidates(path) {
+  const candidates = new Set();
+  const normalized = path.replace(/\\/g, '/');
+  candidates.add(normalized);
+  candidates.add(normalized.toLowerCase());
+  candidates.add(normalized.replace(/\.(png|jpg|jpeg)$/i, '.png'));
+  candidates.add(normalized.replace(/\.(png|jpg|jpeg)$/i, '.jpg'));
+  candidates.add(normalized.replace(/\.(png|jpg|jpeg)$/i, '.jpeg'));
+  if (normalized.startsWith('photos/')) {
+    const file = normalized.split('/').pop();
+    const dir = normalized.slice(0, normalized.lastIndexOf('/') + 1);
+    const base = file.replace(/\.(png|jpg|jpeg)$/i, '');
+    candidates.add(`${dir}${base}.png`);
+    candidates.add(`${dir}${base}.jpg`);
+    candidates.add(`${dir}${base}.jpeg`);
+  }
+  return [...candidates];
+}
+
+function resolveAsset(path) {
+  const tries = assetCandidates(path);
+  for (const candidate of tries) {
+    const test = new Image();
+    test.src = candidate;
+    if (candidate.endsWith('.mp3') || candidate.endsWith('.wav') || candidate.endsWith('.m4a')) {
+      const audio = document.createElement('audio');
+      audio.preload = 'auto';
+      audio.src = candidate;
+      if (audio.canPlayType('audio/mpeg') !== '') {
+        return candidate;
+      }
+    }
+    if (candidate.indexOf('.mp3') === -1 && candidate.indexOf('.wav') === -1 && candidate.indexOf('.m4a') === -1) {
+      return candidate;
+    }
+  }
+  return path;
+}
+
+function showPhoneWarning() {
+  if (window.location.protocol === 'file:') {
+    const banner = document.createElement('div');
+    banner.style.position = 'fixed';
+    banner.style.zIndex = '9999';
+    banner.style.left = '50%';
+    banner.style.top = '16px';
+    banner.style.transform = 'translateX(-50%)';
+    banner.style.background = 'rgba(15, 7, 12, 0.92)';
+    banner.style.border = '1px solid rgba(255,255,255,0.25)';
+    banner.style.borderRadius = '999px';
+    banner.style.padding = '10px 18px';
+    banner.style.fontSize = '12px';
+    banner.style.color = '#fff';
+    banner.style.boxShadow = '0 12px 30px rgba(0,0,0,0.35)';
+    banner.textContent = 'Open this page using a local server for photos + music to load correctly.';
+    document.body.appendChild(banner);
+    setTimeout(() => banner.remove(), 5000);
+  }
+}
+
+/* ==================== MAIN 30 PHOTOS ==================== */
+const mainPhotos = [
+  "photos/photo1.png",
+  "photos/photo2.jpg",
+  "photos/photo3.png",
+  "photos/photo4.jpg",
+  "photos/photo5.png",
+  "photos/photo6.jpg",
+  "photos/photo7.png",
+  "photos/photo8.png",
+  "photos/photo9.png",
+  "photos/photo10.png",
+  "photos/photo11.png",
+  "photos/photo12.png",
+  "photos/photo13.png",
+  "photos/photo14.jpg",
+  "photos/photo15.png",
+  "photos/photo16.png",
+  "photos/photo17.png",
+  "photos/photo18.png",
+  "photos/photo19.png",
+  "photos/photo20.jpg",
+  "photos/photo21.jpg",
+  "photos/photo22.jpg",
+  "photos/photo23.jpg",
+  "photos/photo24.jpg",
+  "photos/photo25.png",
+  "photos/photo26.jpg",
+  "photos/photo27.jpg",
+  "photos/photo28.jpg",
+  "photos/photo29.png",
+  "photos/photo30.jpg"
+].map(resolveAsset);
+
+/* ==================== BONUS PHOTOS — SEPARATE ==================== */
+const bonusPhotos = [
+  "photos/finalPhoto.png",
+  "photos/extra1.jpg",
+  "photos/extra2.jpg",
+  "photos/extra3.jpg",
+  "photos/extra4.jpg",
+  "photos/extra5.jpg",
+  "photos/extra6.jpg",
+  "photos/extra7.jpg",
+  "photos/extra8.jpg",
+  "photos/extra9.jpg",
+  "photos/extra10.jpg"
+].map(resolveAsset);
+
+const mainPhotoList = mainPhotos.map(resolveAsset);
+const mainPhotosResolved = mainPhotoList;
+
+const data=[
+["01","THE MAIN CHARACTER","Ek Paglu tha... aur uske aane se sab kuch aur bhi cute ho gaya. ❤️"],
+["02","SUSPICIOUSLY CUTE","Face innocent, smile dangerous, aur dil ka system instantly on. 😂"],
+["03","WARNING ⚠️","Itna cute hona allowed hai? Shayad sirf tumhe hi aata hai. 😏"],
+["04","FIRST IMPRESSION","Simple photo... par iska effect bilkul deep hai. ❤️"],
+["05","THE VIBE","Kuch log photo mein achhe lagte hain. Tum toh vibe mein bhi special ho. ✨"],
+["06","SMILE ALERT","Ek smile dekhi, phir dil ne bhi kaafi kuch socha. 🚨💖"],
+["07","PAGLU MODE","Thoda pagal. Thoda sweet. Bilkul unforgettable. 🌷"],
+["08","NO FILTER NEEDED","Camera ne bas click kiya, asli magic tumhari presence mein hai. 💫"],
+["09","MEMORY #09","Kuch moments ko caption ki zarurat nahi hoti — bas feel karna padta hai."],
+["10","DOUBLE TROUBLE","Cute + crazy = Paglu. Aur yeh combo bahut addictive hai. 😂❤️"],
+["11","SOFT SIDE","Ab thoda romantic bhi ho jaayein — kyunki tumhari presence kuch aur hi feeling deti hai. 🌹"],
+["12","FROM THE HEART","Kuch photos aankhon se nahi, dil se save hoti hain."],
+["13","SPECIAL","Tumhari presence se har din thoda aur beautiful lagta hai. ❤️"],
+["14","MOOD BOOSTER","Ek smile, aur poora din khushiyon se bhar jaata hai."],
+["15","HALFWAY","15 memories complete. Aur dil abhi bhi tumhe hi zaada dekh raha hai. 🎬"],
+["16","THE LITTLE THINGS","Badi memories chhoti si baaton se banti hain — jaise tumhari hasi."],
+["17","KEEP THIS ONE","Is photo ko dil ke folder mein save kar lo. ❤️"],
+["18","FILMY MOMENT","Background music to nahi hai, par tumhari vibe kaafi filmy hai. 🎶"],
+["19","NO BORING DAYS","Tumhare saath har din ek little story ban jaata hai."],
+["20","20 / 30","20 photos later... aur smile abhi bhi wahi same, wahi cute. 😌"],
+["21","PAGLU ALERT","Official announcement: Paglu mode is permanently ON — and it looks adorable. 😂"],
+["22","COMPLIMENT TIME","Aaj compliments free hain, kyunki tumhari beauty aur smile zaroor deserves it. 💸💖"],
+["23","CHAOS & CUTE","Thoda chaos, bahut si shayari, aur ek adorable person."],
+["24","FAVORITE MOMENT","Kuch moments bas replay button maangte hain — aur dil unhe baar-baar play karta hai. ❤️"],
+["25","25 MEMORIES","Aur phir bhi lagta hai... aur bhi bahut kuch kehna hai tumhare liye. 😏"],
+["26","ONE WISH","More smiles. More warmth. More beautiful days with you. ✨"],
+["27","ALMOST THERE","Final chapters usually emotional hote hain... kyunki tum special ho. ❤️"],
+["28","READY?","Ek secret hai... aur usse pehle tumhe bas ek pyaari si smile dena chahta hoon."],
+["29","LAST PHOTO","One last memory before the real birthday surprise — and the sweetest one yet."],
+["30","THE FINAL FRAME","30 photos. One Paglu. Aur ek simple si fact — tum sabse beautiful ho. 🎂❤️"]
+];
+
+const scenes=document.getElementById("scenes"),segments=document.getElementById("segments");
+showPhoneWarning();
+let idx=0,timer,lastTap=0,touchX=0;
+
+data.forEach((d,i)=>{
+ const s=document.createElement("div");s.className="scene"+(i===0?" active":"");
+ s.innerHTML=`<img src="${mainPhotos[i]}" alt="Paglu photo ${i+1}" loading="${i<3?"eager":"lazy"}" onerror="imageFallback(this,'${mainPhotos[i]}')"><div class="vignette"></div>
+ <div class="content"><div class="number">${d[0]} / 30 • ${d[1]}</div><div class="title">${d[1]}</div><div class="desc">${d[2]}</div></div>`;
+ scenes.appendChild(s);
+ const seg=document.createElement("i");if(i===0)seg.className="now";segments.appendChild(seg);
+});
+const sceneEls=[...document.querySelectorAll(".scene")],segEls=[...segments.children];
+preloadPhotos();
+
+function imageFallback(img, filename){
+  img.dataset.failed="1";
+  img.alt="Photo not found: "+filename;
+  img.style.objectFit="contain";
+  img.style.background="radial-gradient(circle at center,#3a1025,#050406 70%)";
+}
+function startMovie(){
+ document.getElementById("intro").classList.remove("active");
+ document.getElementById("story").classList.add("active");
+ const m=document.getElementById("music");
+ const audioSources = ["Birthday.mp3", "birthday.mp3", "Birthday.MP3", "music/Birthday.mp3"];
+ const selectedMusic = audioSources.find(src => {
+   const test = new Audio();
+   test.src = src;
+   return test.canPlayType('audio/mpeg') !== '' || src.endsWith('.mp3');
+ });
+ if (selectedMusic) m.src = selectedMusic;
+ m.play().catch(()=>{});
+ timer=setInterval(next,7500);floaters();
+ spawnSparkles(16);
+}
+function spawnSparkles(count=10){
+  const icons=['❤️','✨','💖','🌸','💫'];
+  for(let i=0;i<count;i++){
+    const spark=document.createElement('div');
+    spark.className='sparkle';
+    spark.textContent=icons[Math.floor(Math.random()*icons.length)];
+    spark.style.left=(Math.random()*100)+'vw';
+    spark.style.top=(35+Math.random()*45)+'vh';
+    spark.style.fontSize=(12+Math.random()*18)+'px';
+    spark.style.animationDelay=(Math.random()*0.6)+'s';
+    document.body.appendChild(spark);
+    setTimeout(()=>spark.remove(),2200);
+  }
+}
+function render(n){
+ if(n>=30){clearInterval(timer);go("bonus");return}
+ if(n<0)n=29;
+ sceneEls.forEach((s,i)=>s.classList.toggle("active",i===n));
+ segEls.forEach((s,i)=>s.className=i<n?"done":i===n?"now":"");
+ idx=n;document.getElementById("counter").textContent=String(n+1).padStart(2,"0")+" / 30";
+ if([2,9,14,21].includes(n)){const m=["🚨 Cute level exceeded!","😂 Double trouble detected!","🎬 Halfway and still looking good.","💸 Compliment tax activated!"];popup(m[[2,9,14,21].indexOf(n)]);}
+}
+function next(){render(idx+1);restart();spawnSparkles(8)}function previous(){render(idx-1);restart();spawnSparkles(8)}
+function restart(){clearInterval(timer);timer=setInterval(next,7500)}
+function go(id){
+ clearInterval(timer||0);clearInterval(bonusTimer||0);
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ if(id==="bonus")startBonus();
+}
+function musicToggle(){const m=document.getElementById("music");m.paused?m.play():m.pause()}
+function popup(t){const p=document.getElementById("pop");p.textContent=t;p.classList.add("show");setTimeout(()=>p.classList.remove("show"),1500)}
+function floaters(){setInterval(()=>{if(!document.getElementById("story").classList.contains("active"))return;const e=document.createElement("div");e.className="float";e.textContent=["❤️","💕","✨","🌹"][Math.floor(Math.random()*4)];e.style.left=Math.random()*100+"vw";e.style.animationDuration=(4+Math.random()*5)+"s";e.style.fontSize=(12+Math.random()*18)+"px";document.body.appendChild(e);setTimeout(()=>e.remove(),10000)},1200)}
+
+
+function preloadPhotos(){
+  [...mainPhotos, ...bonusPhotos].forEach(src => {
+    const im = new Image();
+    im.src = src;
+  });
+}
+const bonusCaptions=[
+["ONE MORE MEMORY","30 photos khatam ho gayi... lekin tumhari smile wali story abhi khatam nahi hui. 🌹"],
+["BONUS #01","Okay... ye photo bhi rakhni thi. Dil ne bola, 'isko hataaya toh Paglu naraz ho jayega.' 😂❤️"],
+["BONUS #02","Warning: is photo ko dekh kar smile automatically ON ho sakti hai. 😏"],
+["BONUS #03","Tumhari gallery mein photos hain... meri gallery mein memories. ❤️"],
+["BONUS #04","Itna cute content dekh kar phone bhi bol raha hai: bas kar bhai! 😂📱"],
+["BONUS #05","Agar beauty ka attendance hota... tumhari full attendance hoti. 😌❤️"],
+["BONUS #06","Ye wali photo thodi dangerous hai... dil ko overthink karwa sakti hai. 🌹"],
+["BONUS #07","Proof #7 ki Paglu hona ek full-time profession hai. 😂"],
+["BONUS #08","Photo achhi hai... par jiski hai, woh zyada achha hai. ❤️"],
+["BONUS #09","Ek aur memory save. Storage full ho sakti hai, feelings nahi. 🥹❤️"],
+["BONUS #10","Last bonus photo... warna birthday website ki jagah poori documentary ban jayegi. 😂🎬"]
+];
+let bonusIndex=0,bonusTimer;
+
+function startBonus(){clearInterval(bonusTimer);bonusIndex=0;document.getElementById("bonusEnd").classList.remove("show");buildBonusDots();showBonusPhoto(0);bonusTimer=setInterval(()=>bonusNext(true),30000)}
+function buildBonusDots(){const wrap=document.getElementById("extraDots");wrap.innerHTML="";bonusPhotos.forEach((_,i)=>{const d=document.createElement("i");d.id="bd"+i;wrap.appendChild(d)})}
+function showBonusPhoto(i){
+ if(i<0)i=bonusPhotos.length-1;
+ if(i>=bonusPhotos.length){
+   clearInterval(bonusTimer);
+   document.getElementById("bonusEnd").classList.add("show");
+   document.getElementById("extraCounter").textContent="THE LAST BONUS • 100% PAGLU";
+   document.getElementById("bonusTitle").innerHTML='Okay... ab sach mein<br><span class="pink">last stop. ❤️</span>';
+   document.getElementById("bonusCaption").innerHTML='Ab aur photo add karoge toh mujhe shak hoga ki tum birthday nahi, poori documentary bana rahe ho. 😂🎬';
+   return;
+ }
+ bonusIndex=i;
+ const img=document.getElementById("bonusPhoto");
+ img.style.animation="none";void img.offsetWidth;img.style.animation="bonusZoom 30s ease forwards";
+ img.src=bonusPhotos[i];
+ img.onerror=()=>{
+  if(img.dataset.fallbackApplied!=="1"){
+    img.dataset.fallbackApplied="1";
+    img.src="photos/finalPhoto.png";
+  }else{
+    img.style.background="radial-gradient(circle at center,#3a1025,#050406 70%)";
+  }
+};
+ document.getElementById("extraCounter").textContent=`BONUS MEMORY ${i+1} / ${bonusPhotos.length}`;
+ document.getElementById("bonusTitle").innerHTML=bonusCaptions[i][0]+`<br><span class="pink">${i===0?"30 ke baad bhi... 😏❤️":"Paglu special. ❤️"}</span>`;
+ document.getElementById("bonusCaption").textContent=bonusCaptions[i][1];
+ [...document.querySelectorAll("#extraDots i")].forEach((d,k)=>d.classList.toggle("on",k===i));
+}
+function bonusNext(auto=false){if(bonusIndex<bonusPhotos.length)showBonusPhoto(bonusIndex+1)}
+function bonusPrev(){if(bonusIndex>0)showBonusPhoto(bonusIndex-1)}
+
+function toSecret(){go("secret")}
+function unlock(){document.getElementById("lock").textContent="💖";setTimeout(()=>go("cake"),900)}
+function celebrate(){
+ for(let i=0;i<24;i++){const e=document.createElement("div");e.className="heartBurst";e.textContent=["❤️","💖","💕","✨"][i%4];e.style.left=(20+Math.random()*60)+"vw";e.style.top=(55+Math.random()*20)+"vh";document.body.appendChild(e);setTimeout(()=>e.remove(),1200)}
+ spawnSparkles(30);
+ setTimeout(()=>go("final"),1300)
+}
+
+document.addEventListener("touchstart",e=>{touchX=e.changedTouches[0].screenX}, {passive:true});
+document.addEventListener("touchend",e=>{
+ if(!document.getElementById("story").classList.contains("active"))return;
+ const dx=e.changedTouches[0].screenX-touchX;if(Math.abs(dx)>50){dx<0?next():previous()}
+});
+document.addEventListener("dblclick",e=>{
+ if(!document.getElementById("story").classList.contains("active"))return;
+ const h=document.createElement("div");h.className="heartBurst";h.textContent="❤️";h.style.left=e.clientX+"px";h.style.top=e.clientY+"px";document.body.appendChild(h);setTimeout(()=>h.remove(),1000);
+});
+document.addEventListener("keydown",e=>{
+ if(document.getElementById("story").classList.contains("active")){if(e.key==="ArrowRight")next();if(e.key==="ArrowLeft")previous();if(e.code==="Space"){e.preventDefault();musicToggle()}}
+});
+</script>
+</body>
+</html>
